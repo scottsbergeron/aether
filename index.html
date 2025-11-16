@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether - Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a2e;
+        }
+        #game-container {
+            border: 2px solid #16213e;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/[email protected]/dist/phaser.min.js"></script>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            parent: 'game-container',
+            backgroundColor: '#0f3460',
+            scene: {
+                create: create
+            }
+        };
+
+        const game = new Phaser.Game(config);
+
+        function create() {
+            // Add title text
+            this.add.text(400, 200, 'AETHER', {
+                fontSize: '64px',
+                fontFamily: 'Arial',
+                color: '#e94560',
+                stroke: '#16213e',
+                strokeThickness: 4
+            }).setOrigin(0.5);
+
+            // Add subtitle text
+            this.add.text(400, 280, 'A Fantasy Game', {
+                fontSize: '24px',
+                fontFamily: 'Arial',
+                color: '#ffffff',
+                fontStyle: 'italic'
+            }).setOrigin(0.5);
+
+            // Add some decorative elements
+            this.add.circle(200, 150, 30, 0xe94560, 0.5);
+            this.add.circle(600, 150, 30, 0xe94560, 0.5);
+            this.add.circle(200, 450, 30, 0xe94560, 0.5);
+            this.add.circle(600, 450, 30, 0xe94560, 0.5);
+
+            // Add instruction text
+            this.add.text(400, 500, 'Game Starting...', {
+                fontSize: '18px',
+                fontFamily: 'Arial',
+                color: '#a0a0a0'
+            }).setOrigin(0.5);
+        }
+    </script>
+</body>
+</html>
+
