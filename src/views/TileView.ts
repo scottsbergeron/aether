@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Tile, TerrainType } from '../models/Tile';
-import { Renderable } from '../Renderable';
+import { Renderable } from './Renderable';
 
 export class TileView implements Renderable {
     private tile: Tile;

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { HexMap } from '../models/HexMap';
 import { TerrainType } from '../models/Tile';
-import { Renderable } from '../Renderable';
+import { Renderable } from './Renderable';
 
 export class HexMapView implements Renderable {
     private hexMap: HexMap;

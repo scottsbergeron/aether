@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { BattleState } from '../models/BattleState';
 import { HexMapView } from './HexMapView';
-import { Renderable } from '../Renderable';
+import { Renderable } from './Renderable';
 
 export class BattleView implements Renderable {
     private battleState: BattleState;
