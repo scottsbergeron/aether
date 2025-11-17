@@ -10,7 +10,7 @@ export class BattleController implements SceneControllable {
 
     constructor(battleState: BattleState) {
         this.battleState = battleState;
-        this.battleView = new BattleView(this);
+        this.battleView = new BattleView(battleState);
     }
 
     /**

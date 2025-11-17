@@ -1,19 +1,18 @@
 import Phaser from 'phaser';
-import { BattleController } from '../controllers/BattleController';
+import { BattleState } from '../models/BattleState';
 import { HexMapView } from './HexMapView';
 import { Renderable } from '../Renderable';
 
 export class BattleView implements Renderable {
-    private battleController: BattleController;
+    private battleState: BattleState;
     private hexMapView: HexMapView | null = null;
 
-    constructor(battleController: BattleController) {
-        this.battleController = battleController;
+    constructor(battleState: BattleState) {
+        this.battleState = battleState;
     }
 
     render(scene: Phaser.Scene): void {
-        const battleState = this.battleController.getState();
-        this.hexMapView = new HexMapView(battleState.map, 30, 400, 300);
+        this.hexMapView = new HexMapView(this.battleState.map, 30, 400, 300);
         this.hexMapView.render(scene);
     }
 
