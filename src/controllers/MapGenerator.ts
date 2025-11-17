@@ -1,4 +1,4 @@
-import { HexMap } from '../models/Map';
+import { HexMap } from '../models/HexMap';
 import { Tile, TerrainType } from '../models/Tile';
 
 export class MapGenerator {

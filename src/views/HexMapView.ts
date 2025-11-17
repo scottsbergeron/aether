@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { HexMap } from '../models/Map';
+import { HexMap } from '../models/HexMap';
 import { TerrainType } from '../models/Tile';
 import { Renderable } from '../Renderable';
 

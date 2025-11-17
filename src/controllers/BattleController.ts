@@ -1,11 +1,16 @@
+import Phaser from 'phaser';
 import { BattleState } from '../models/BattleState';
 import { MapGenerator } from './MapGenerator';
+import { BattleView } from '../views/BattleView';
+import { SceneControllable } from './SceneControllable';
 
-export class BattleController {
+export class BattleController implements SceneControllable {
     private battleState: BattleState;
+    private battleView: BattleView;
 
     constructor(battleState: BattleState) {
         this.battleState = battleState;
+        this.battleView = new BattleView(this);
     }
 
     /**
@@ -28,6 +33,32 @@ export class BattleController {
      */
     getState(): BattleState {
         return this.battleState;
+    }
+
+    /**
+     * Get the battle view
+     * @returns The BattleView instance
+     */
+    getView(): BattleView {
+        return this.battleView;
+    }
+
+    /**
+     * Initialize and render the scene
+     * @param scene - The Phaser scene
+     */
+    startScene(scene: Phaser.Scene): void {
+        this.battleView.render(scene);
+    }
+
+    /**
+     * Update the scene each frame
+     * @param scene - The Phaser scene
+     * @param time - Current time
+     * @param delta - Time since last frame
+     */
+    updateScene(scene: Phaser.Scene, time: number, delta: number): void {
+        this.battleView.update(scene, time, delta);
     }
 }
 

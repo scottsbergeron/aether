@@ -1,4 +1,4 @@
-import { HexMap } from './Map';
+import { HexMap } from './HexMap';
 
 export class BattleState {
     map: HexMap;
