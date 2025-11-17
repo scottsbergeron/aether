@@ -10,7 +10,7 @@ export class BattleController implements SceneControllable {
 
     constructor(battleState: BattleState) {
         this.battleState = battleState;
-        this.battleView = new BattleView(battleState);
+        this.battleView = new BattleView();
     }
 
     /**
@@ -48,7 +48,7 @@ export class BattleController implements SceneControllable {
      * @param scene - The Phaser scene
      */
     startScene(scene: Phaser.Scene): void {
-        this.battleView.render(scene);
+        this.battleView.render(scene, this.battleState);
     }
 
     /**
@@ -58,7 +58,9 @@ export class BattleController implements SceneControllable {
      * @param delta - Time since last frame
      */
     updateScene(scene: Phaser.Scene, time: number, delta: number): void {
-        this.battleView.update(scene, time, delta);
+        if (this.battleView.update) {
+            this.battleView.update(scene, this.battleState, time, delta);
+        }
     }
 }
 

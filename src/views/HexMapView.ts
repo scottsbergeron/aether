@@ -3,26 +3,24 @@ import { HexMap } from '../models/HexMap';
 import { TerrainType } from '../models/Tile';
 import { Renderable } from './Renderable';
 
-export class HexMapView implements Renderable {
-    private hexMap: HexMap;
+export class HexMapView implements Renderable<HexMap> {
     private hexSize: number;
     private offsetX: number;
     private offsetY: number;
     private graphicsObjects: Phaser.GameObjects.Graphics[] = [];
 
-    constructor(hexMap: HexMap, hexSize: number = 30, offsetX: number = 400, offsetY: number = 300) {
-        this.hexMap = hexMap;
+    constructor(hexSize: number = 30, offsetX: number = 400, offsetY: number = 300) {
         this.hexSize = hexSize;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }
 
-    render(scene: Phaser.Scene): void {
+    render(scene: Phaser.Scene, state: HexMap): void {
         // Clear existing graphics
         this.destroy(scene);
 
         // Get all tiles and render them
-        const tiles = this.hexMap.getAllTiles();
+        const tiles = state.getAllTiles();
         tiles.forEach(([q, r, tile]) => {
             this.renderTile(scene, q, r, tile.terrainType);
         });

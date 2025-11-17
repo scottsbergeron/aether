@@ -2,30 +2,27 @@ import Phaser from 'phaser';
 import { Tile, TerrainType } from '../models/Tile';
 import { Renderable } from './Renderable';
 
-export class TileView implements Renderable {
-    private tile: Tile;
-    private q: number;
-    private r: number;
+interface TileState {
+    tile: Tile;
+    q: number;
+    r: number;
+}
+
+export class TileView implements Renderable<TileState> {
     private hexSize: number;
     private graphics: Phaser.GameObjects.Graphics | null = null;
-    private x: number = 0;
-    private y: number = 0;
 
-    constructor(tile: Tile, q: number, r: number, hexSize: number = 30) {
-        this.tile = tile;
-        this.q = q;
-        this.r = r;
+    constructor(hexSize: number = 30) {
         this.hexSize = hexSize;
-        this.calculatePixelPosition();
     }
 
-    render(scene: Phaser.Scene): void {
+    render(scene: Phaser.Scene, state: TileState): void {
         if (this.graphics) {
             this.graphics.destroy();
         }
 
         this.graphics = scene.add.graphics();
-        this.drawHexagon(this.graphics);
+        this.drawHexagon(this.graphics, state);
     }
 
     destroy(scene: Phaser.Scene): void {
@@ -38,25 +35,28 @@ export class TileView implements Renderable {
     /**
      * Convert axial coordinates (q, r) to pixel coordinates
      */
-    private calculatePixelPosition(): void {
+    private calculatePixelPosition(q: number, r: number): { x: number; y: number } {
         const size = this.hexSize;
-        this.x = size * (Math.sqrt(3) * this.q + Math.sqrt(3) / 2 * this.r);
-        this.y = size * (3 / 2 * this.r);
+        return {
+            x: size * (Math.sqrt(3) * q + Math.sqrt(3) / 2 * r),
+            y: size * (3 / 2) * r
+        };
     }
 
     /**
      * Draw a hexagon at the tile's position
      */
-    private drawHexagon(graphics: Phaser.GameObjects.Graphics): void {
-        const color = this.getTerrainColor();
+    private drawHexagon(graphics: Phaser.GameObjects.Graphics, state: TileState): void {
+        const color = this.getTerrainColor(state.tile.terrainType);
         const strokeColor = 0x000000;
         const strokeWidth = 2;
 
         graphics.fillStyle(color, 1);
         graphics.lineStyle(strokeWidth, strokeColor, 1);
 
-        // Draw hexagon (6 points)
-        const points = this.getHexagonPoints();
+        const pos = this.calculatePixelPosition(state.q, state.r);
+        const points = this.getHexagonPoints(pos.x, pos.y);
+        
         graphics.beginPath();
         graphics.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < points.length; i++) {
@@ -70,15 +70,15 @@ export class TileView implements Renderable {
     /**
      * Get the 6 points of a hexagon
      */
-    private getHexagonPoints(): Array<{ x: number; y: number }> {
+    private getHexagonPoints(centerX: number, centerY: number): Array<{ x: number; y: number }> {
         const points: Array<{ x: number; y: number }> = [];
         const size = this.hexSize;
         
         for (let i = 0; i < 6; i++) {
             const angle = (Math.PI / 3) * i;
             points.push({
-                x: this.x + size * Math.cos(angle),
-                y: this.y + size * Math.sin(angle)
+                x: centerX + size * Math.cos(angle),
+                y: centerY + size * Math.sin(angle)
             });
         }
         
@@ -88,8 +88,8 @@ export class TileView implements Renderable {
     /**
      * Get color based on terrain type
      */
-    private getTerrainColor(): number {
-        switch (this.tile.terrainType) {
+    private getTerrainColor(terrainType: TerrainType): number {
+        switch (terrainType) {
             case TerrainType.Water:
                 return 0x4a90e2; // Blue
             case TerrainType.Plains:
@@ -99,20 +99,6 @@ export class TileView implements Renderable {
             default:
                 return 0xffffff; // White
         }
-    }
-
-    /**
-     * Get the pixel x coordinate
-     */
-    getPixelX(): number {
-        return this.x;
-    }
-
-    /**
-     * Get the pixel y coordinate
-     */
-    getPixelY(): number {
-        return this.y;
     }
 }
 
