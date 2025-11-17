@@ -27,16 +27,23 @@ export class MapGenerator {
         const map = new HexMap();
         const terrainTypes = Object.values(TerrainType);
 
-        // Generate tiles in a rectangular pattern using axial coordinates (q, r)
-        for (let r = 0; r < height; r++) {
-            for (let q = 0; q < width; q++) {
+        // Generate tiles in a rectangular pattern using offset coordinates
+        // For a rectangular hex grid with odd-r offset (odd rows shifted right),
+        // convert offset coordinates to axial coordinates
+        for (let row = 0; row < height; row++) {
+            for (let col = 0; col < width; col++) {
+                // Convert offset coordinates to axial coordinates
+                // For odd-r offset: axial_q = col - floor(row / 2)
+                const axialQ = col - Math.floor(row / 2);
+                const axialR = row;
+                
                 // Get random terrain type
                 const randomIndex = this.randomInt(0, terrainTypes.length - 1);
                 const terrainType = terrainTypes[randomIndex];
                 
-                // Create and place the tile
+                // Create and place the tile using axial coordinates
                 const tile = new Tile(terrainType);
-                map.setTile(q, r, tile);
+                map.setTile(axialQ, axialR, tile);
             }
         }
 
